@@ -1,0 +1,28 @@
+{
+    "author": "OvertimeFux team",
+    "commands": {
+      "_execute_sidebar_action": {
+        "suggested_key": {
+          "default": "Ctrl+Y"
+        }
+      }
+    },
+    "description": "Vertical tab bar for Firefox 69+",
+    "homepage_url": "https://github.com/OvertimeFux/Vertabs",
+    "icons": {
+      "48": "icon32.png",
+      "128": "icon128.png"
+    },
+    "manifest_version": 2,
+    "name": "Vertabs",
+    "permissions": [
+      "tabs"
+    ],
+    "sidebar_action": {
+      "default_icon": "icon32.png",
+      "default_panel": "panel.html",
+      "default_title": "Vertabs"
+    },
+    "version": "0.1"
+  }
+  
