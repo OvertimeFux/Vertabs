@@ -2,6 +2,7 @@
     const createElement = document.createElement.bind(document)
 
     var windowId
+    var tabsById = {}
 
     const renderPinnedTab = function (tab) {
         let html = createElement("img")
@@ -16,34 +17,43 @@
         let html = createElement("div")
         html.title = tab.title
         html.classList.add("tab")
+        // html.dataset.tabId = tab.id
 
         html.innerHTML = `
             <img class="favicon" src="${tab.favIconUrl}">
-            <div class="title">${tab.title}</div>
+            <div class="title" data-tabid="${tab.id}">${tab.title}</div>
         `
 
         return html
     }
 
-    browser.windows.getCurrent().then((windowInfo) => {
-        windowId = windowInfo.id
-    })
-
     const $tabs = document.getElementById("tabs")
     const $pinnedTabs = document.getElementById("pinned-tabs")
 
-    browser.tabs.query({windowId: windowId}).then((windowTabs) => {
-        $tabs.textContent = ""
-        $pinnedTabs.textContent = ""
+    browser.windows.getCurrent().then((windowInfo) => {
+        windowId = windowInfo.id
+    }).then(function() {
+        browser.tabs.query({windowId: windowId}).then((windowTabs) => {
+            $tabs.textContent = ""
 
-        windowTabs.forEach((tab) => {
-            if (tab.pinned) {
-                let tabNode = renderPinnedTab(tab)
-                $pinnedTabs.appendChild(tabNode)
-            } else {
-                let tabNode = renderTab(tab)
-                $tabs.appendChild(tabNode)
-            }
+            windowTabs.forEach((tab) => {
+                if (tab.pinned) {
+                    let tabNode = renderPinnedTab(tab)
+                    $pinnedTabs.appendChild(tabNode)
+                } else {
+                    let tabNode = renderTab(tab)
+                    $tabs.appendChild(tabNode)
+                }
+
+                tabsById[tab.id] = tab
+            })
         })
+    })
+
+    $tabs.addEventListener('click', function (e) {
+        if (e.target && e.target.matches("div.title")) {
+            let tabId = parseInt(e.target.dataset.tabid)
+            browser.tabs.update(tabId, {active: true})
+        }
     })
 })()
