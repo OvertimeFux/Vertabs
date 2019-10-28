@@ -1,123 +1,46 @@
-html,
-body {
-  min-height: 100vh;
-}
-body {
-  background-color: -moz-Field;
-  color: -moz-FieldText;
-  font: menu;
+#panel-container {
   display: flex;
-}
-#content {
-  position: absolute;
-  top: 32px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
-}
-#tabs {
-  margin: 0;
-  padding: 0;
-}
-.tab {
-  display: flex;
-  width: 100%;
-  padding: 1px 6px;
-  list-style: none;
-}
-.favicon {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  flex: none;
-  margin-right: 8px;
-  opacity: 0.7;
-  will-change: transform;
-  position: relative;
-}
-.favicon > img {
-  width: 16px;
-  height: 16px;
-}
-.no-favicon {
-  position: relative;
-}
-.no-favicon:before {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  width: 4px;
-  height: 4px;
-  background-color: -moz-FieldText;
-}
-.no-favicon > img {
-  display: none;
-}
-span {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  align-self: center;
-  color: GrayText;
-  flex: 1;
-}
-.audible > .soundicon {
-  content: ' ';
-  display: block;
-  flex: none;
-  width: 1.4em;
-  height: 1.4em;
-  background-color: -moz-FieldText;
-  mask: url("tab-audio-playing.svg");
-}
-.audible.muted > .soundicon {
-  mask: url("tab-audio-muted.svg");
-}
-.loaded > .favicon {
-  opacity: 1;
-}
-.loaded > span {
-  color: -moz-FieldText;
-}
-.highlighted {
-  background-color: Highlight;
-}
-.highlighted > span {
-  color: HighlightText;
-}
-.highlighted > .soundicon {
-  background-color: HighlightText;
-}
-.highlighted .no-favicon:before {
-  background-color: HighlightText;
-}
-#drag-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: none;
-  border-top: dashed 1px -moz-FieldText;
-  width: 100%;
-}
-#empty-space {
-  flex-grow: 1;
-}
-#searchbox {
-  display: flex;
-  padding: 3px;
-  flex-direction: row;
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-#searchtext {
-  flex: 1;
-  border-radius: 5px;
+  flex-direction: column;
 }
 
+#searchbox, #searchtext {
+  width: 100%;
+  padding: 0% !important;
+}
+
+#controls {
+  padding: 5px;
+}
+
+#pinned-tabs {
+  padding: 5px;
+}
+
+#tabs {
+  overflow: auto;
+}
+
+.tab {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: line;
+  align-items: center;
+}
+
+img.favicon {
+  width: 16px;
+  height: 16px;
+  margin: 2px 5px;
+}
+
+.title {
+  /* nothing yet */
+}
+
+img.favicon-pinned {
+  width: 16px;
+  height: 16px;
+  margin: 2px 5px;
+}
