@@ -6,6 +6,10 @@ Vertical tab bar plugin for Firefox 69+
 
 > about:debugging#/runtime/this-firefox
 
+## Packaging and publishing
+
+> zip -r ./Vertabs.xpi *
+
 ## TODO
 
 * Add favicon placeholder for tabs which are not having favicon
