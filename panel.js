@@ -17,7 +17,13 @@
         let html = createElement("div")
         html.title = tab.title
         html.classList.add("tab")
-        // html.dataset.tabId = tab.id
+        if (tab.highlighted) {
+            html.classList.add("highlighted")
+        }
+
+        if (tab.discarded) {
+            html.classList.add("discarded")
+        }
 
         html.innerHTML = `
             <img class="favicon" src="${tab.favIconUrl}">
