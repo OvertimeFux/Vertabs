@@ -5,10 +5,11 @@
     var tabsById = {}
 
     const renderPinnedTab = function (tab) {
-        let html = createElement("img")
-        html.classList.add("favicon-pinned")
+        let html = createElement("button")
+        html.classList.add("pinned-tab")
         html.src = tab.favIconUrl
         html.title = tab.title
+        html.innerHTML = `<img class="favicon-pinned" src="${tab.favIconUrl}" title="${tab.title}">`
 
         return html
     }
@@ -62,4 +63,6 @@
             browser.tabs.update(tabId, {active: true})
         }
     })
+
+    document.addEventListener("contextmenu", event => event.preventDefault())
 })()
