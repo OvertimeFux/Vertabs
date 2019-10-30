@@ -18,12 +18,17 @@
                 tabNode: tabNode
             }
         },
-        changeTabEvent: function(tabId, changeInfo, tab) {
+        changeTabIconAndTitle: function(tabId, changeInfo, tab) {
             // TODO: "attention" "audible" "discarded" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
-            console.log(tab.title)
             let tabNode = this.tabsById[tabId].tabNode
             tabNode.querySelector("img.favicon").src = tab.favIconUrl
             tabNode.querySelector("div.title").innerHTML = tab.title
+        },
+        setActiveTabEvent: function(activeInfo) {
+            let tabNode = this.tabsById[activeInfo.tabId].tabNode
+            let prevActiveNode = this.tabsById[activeInfo.previousTabId].tabNode
+            prevActiveNode.classList.remove("highlighted")
+            tabNode.classList.add("highlighted")
         }
     }
 
@@ -68,10 +73,10 @@
             windowTabs.forEach((tab) => {
                 let tabNode
                 if (tab.pinned) {
-                    let tabNode = renderPinnedTab(tab)
+                    tabNode = renderPinnedTab(tab)
                     $pinnedTabs.appendChild(tabNode)
                 } else {
-                    let tabNode = renderTab(tab)
+                    tabNode = renderTab(tab)
                     $tabs.appendChild(tabNode)
                 }
 
@@ -92,7 +97,8 @@
 
     browser.tabs.onRemoved.addListener(state.removeTabEvent.bind(state))
     browser.tabs.onCreated.addListener(state.createTabEvent.bind(state))
-    browser.tabs.onUpdated.addListener(state.changeTabEvent.bind(state), {
+    browser.tabs.onActivated.addListener(state.setActiveTabEvent.bind(state))
+    browser.tabs.onUpdated.addListener(state.changeTabIconAndTitle.bind(state), {
         properties: ["title", "favIconUrl"]
     })
 })()
