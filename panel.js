@@ -33,10 +33,11 @@
     }
 
     const renderPinnedTab = function (tab) {
-        let html = createElement("img")
-        html.classList.add("favicon-pinned")
+        let html = createElement("button")
+        html.classList.add("pinned-tab")
         html.src = tab.favIconUrl
         html.title = tab.title
+        html.innerHTML = `<img class="favicon-pinned" src="${tab.favIconUrl}" title="${tab.title}">`
 
         return html
     }
@@ -95,6 +96,8 @@
         }
     })
 
+    document.addEventListener("contextmenu", event => event.preventDefault())
+    
     browser.tabs.onRemoved.addListener(state.removeTabEvent.bind(state))
     browser.tabs.onCreated.addListener(state.createTabEvent.bind(state))
     browser.tabs.onActivated.addListener(state.setActiveTabEvent.bind(state))

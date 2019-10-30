@@ -8,20 +8,44 @@ body {
   overflow: hidden;
 }
 
-#controls {
+#header {
+  display: flex;
+  align-items: center;
   padding: 5px;
 }
 
 #pinned-tabs {
-  padding: 5px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  position: fixed;
+  flex-grow: 1;
+}
+
+#controls {
+  /* nothing */
+}
+
+button.pinned-tab, button.controls-btn {
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button.pinned-tab {
+  margin-right: 2px;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+img.favicon-pinned, img.controls-btn-icon {
+  width: 16px;
+  height: 16px;
+  margin: 2px 5px;
 }
 
 #tabs-list-container {
-  top: 32px;
+  top: 34px;
   bottom: 0;
   right: 0;
   left: 0;
@@ -66,12 +90,6 @@ img.favicon {
 
 .title {
   /* nothing yet */
-}
-
-img.favicon-pinned {
-  width: 16px;
-  height: 16px;
-  margin: 2px 5px;
 }
 
 .fade {
