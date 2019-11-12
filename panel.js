@@ -35,6 +35,7 @@
     const renderPinnedTab = function (tab) {
         let html = createElement("button")
         html.classList.add("pinned-tab")
+        html.setAttribute('data-tabid', tab.id)
         html.src = tab.favIconUrl
         html.title = tab.title
         html.innerHTML = `<img class="favicon-pinned" src="${tab.favIconUrl}" title="${tab.title}">`
@@ -46,6 +47,7 @@
         let html = createElement("div")
         html.title = tab.title
         html.classList.add("tab")
+        html.setAttribute('data-tabid', tab.id)
         if (tab.highlighted) {
             html.classList.add("highlighted")
         }
@@ -56,7 +58,7 @@
 
         html.innerHTML = `
             <img class="favicon" src="${tab.favIconUrl}">
-            <div class="title" data-tabid="${tab.id}">${tab.title}</div>
+            <div class="title">${tab.title}</div>
         `
 
         return html
@@ -90,8 +92,33 @@
     })
 
     $tabs.addEventListener('click', function (e) {
-        if (e.target && e.target.matches("div.title")) {
-            let tabId = parseInt(e.target.dataset.tabid)
+        if (e.target) {
+            let tabId
+
+            if (e.target.matches("div.tab")) {
+                tabId = parseInt(e.target.dataset.tabid)
+            }
+    
+            if (e.target.parentElement.matches("div.tab")) {
+                tabId = parseInt(e.target.parentElement.dataset.tabid)
+            }
+    
+            browser.tabs.update(tabId, {active: true})
+        }
+    })
+
+    $pinnedTabs.addEventListener('click', function (e) {
+        if (e.target) {
+            let tabId
+            
+            if (e.target.matches("button.pinned-tab")) {
+                tabId = parseInt(e.target.dataset.tabid)
+            }
+    
+            if (e.target.parentElement.matches("button.pinned-tab")) {
+                tabId = parseInt(e.target.parentElement.dataset.tabid)
+            }
+    
             browser.tabs.update(tabId, {active: true})
         }
     })

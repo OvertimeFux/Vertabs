@@ -15,3 +15,4 @@ Vertical tab bar plugin for Firefox 69+
 * Add favicon placeholder for tabs which are not having favicon
 * Show hibernated tabs in gray and dead inside
 * Consider to use [official FF icons](https://design.firefox.com/icons/viewer/)
+* JIRA ticket status / Youtube video completion status (could be pluggable)
