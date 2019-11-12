@@ -1,7 +1,11 @@
 (function () {
     const createElement = document.createElement.bind(document)
 
-    var windowId
+    let windowId
+    const $tabs = document.getElementById("tabs")
+    const $pinnedTabs = document.getElementById("pinned-tabs")
+    const $scrollTop = document.getElementById("scroll-top")
+    const $scrollBottom = document.getElementById("scroll-bottom")
 
     let state = {
         tabsById: {},
@@ -12,23 +16,43 @@
         },
         createTabEvent: function (tab) {
             let tabNode = renderTab(tab)
-            $tabs.appendChild(tabNode)
             this.tabsById[tab.id] = {
                 apiTab: tab,
                 tabNode: tabNode
             }
+
+            browser.tabs.query({index: tab.index + 1}).then((windowTabs) => {
+                let nextTab = windowTabs[0]
+                if (nextTab) {
+                    let nextTabNode = this.tabsById[nextTab.id].tabNode
+                    $tabs.insertBefore(tabNode, nextTabNode)
+                } else {
+                    $tabs.appendChild(tabNode)
+                }
+            })
         },
         changeTabIconAndTitle: function(tabId, changeInfo, tab) {
             // TODO: "attention" "audible" "discarded" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
-            let tabNode = this.tabsById[tabId].tabNode
-            tabNode.querySelector("img.favicon").src = tab.favIconUrl
-            tabNode.querySelector("div.title").innerHTML = tab.title
+            let bothTabs = this.tabsById[tabId]
+            if (bothTabs) {
+                let tabNode = bothTabs.tabNode
+                if (tab.pinned) {
+                    let favicon = tabNode.querySelector("img.favicon-pinned")
+                    favicon.src = tab.favIconUrl
+                    favicon.setAttribute("title", tab.title)
+                } else {
+                    tabNode.querySelector("img.favicon").src = tab.favIconUrl
+                    tabNode.querySelector("div.title").innerHTML = tab.title
+                }
+            }
         },
         setActiveTabEvent: function(activeInfo) {
             let tabNode = this.tabsById[activeInfo.tabId].tabNode
-            let prevActiveNode = this.tabsById[activeInfo.previousTabId].tabNode
-            prevActiveNode.classList.remove("highlighted")
-            tabNode.classList.add("highlighted")
+            if (activeInfo.previousTabId) {
+                let prevActiveNode = this.tabsById[activeInfo.previousTabId].tabNode
+                prevActiveNode.classList.remove("highlighted")
+                tabNode.classList.add("highlighted")
+            }
         }
     }
 
@@ -60,14 +84,8 @@
             <img class="favicon" src="${tab.favIconUrl}">
             <div class="title">${tab.title}</div>
         `
-
         return html
     }
-
-    const $tabs = document.getElementById("tabs")
-    const $pinnedTabs = document.getElementById("pinned-tabs")
-    const $scrollTop = document.getElementById("scroll-top")
-    const $scrollBottom = document.getElementById("scroll-bottom")
 
     browser.windows.getCurrent().then((windowInfo) => {
         windowId = windowInfo.id
