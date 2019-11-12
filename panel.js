@@ -66,6 +66,8 @@
 
     const $tabs = document.getElementById("tabs")
     const $pinnedTabs = document.getElementById("pinned-tabs")
+    const $scrollTop = document.getElementById("scroll-top")
+    const $scrollBottom = document.getElementById("scroll-bottom")
 
     browser.windows.getCurrent().then((windowInfo) => {
         windowId = windowInfo.id
@@ -91,7 +93,43 @@
         })
     })
 
+    $tabs.addEventListener('scroll', function(e) {
+        let target = e.target
+        let pos = target.scrollTop
+        let max = target.scrollHeight - target.clientHeight
+        let percent = Number((pos / max).toFixed(1))
+
+        console.debug(percent)
+
+        switch (percent) {
+            case 0.0: 
+                $scrollTop.style.display = "none";
+                $scrollBottom.style.display = "block";
+                break;
+            case 0.1:
+            case 0.9:
+                break;
+            case 1.0: 
+                $scrollBottom.style.display = "none";
+                $scrollTop.style.display = "block";
+                break;
+            default:
+                $scrollTop.style.display = "block";
+                $scrollBottom.style.display = "block";
+        }
+    })
+
+    $scrollTop.addEventListener('click', function (e) {
+        $tabs.scrollTop = 0;
+    })
+
+    $scrollBottom.addEventListener('click', function (e) {
+        $tabs.scrollTop = $tabs.scrollHeight;
+    })
+
     $tabs.addEventListener('click', function (e) {
+        console.debug("Click on:", e.target)
+
         if (e.target) {
             let tabId
 
@@ -108,6 +146,8 @@
     })
 
     $pinnedTabs.addEventListener('click', function (e) {
+        console.debug("Click on:", e.target)
+
         if (e.target) {
             let tabId
             

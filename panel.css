@@ -50,13 +50,17 @@ img.favicon-pinned, img.controls-btn-icon {
   right: 0;
   left: 0;
   position: fixed;
-  height: 100% - 32px;
-  overflow: auto;
+  margin: 0;
+  /* height: 100% - 34px; */
+  display: flex;
+  flex-direction: column;
 }
 
 #tabs {
   margin: 0;
   padding: 0;
+  flex: 1;
+  overflow: auto;
 }
 
 .tab {
@@ -92,11 +96,34 @@ img.favicon {
   /* nothing yet */
 }
 
-.fade {
+/* .fade {
   top: 0;
   right: 0;
   width: 5%;
   height: 100%;
   background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
   position: fixed;
+} */
+
+#scroll-top {
+  height: 16px;
+  width: 100%;
+  background-color: -moz-cellhighlight;
+  display: none;
+}
+
+#scroll-bottom {
+  height: 16px;
+  width: 100%;
+  background-color: -moz-cellhighlight;
+  display: none;
+}
+
+#scroll-top img, #scroll-bottom img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  width: 16px;
+  height: 16px;
 }
