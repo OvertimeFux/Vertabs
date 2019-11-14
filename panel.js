@@ -46,6 +46,20 @@
                 }
             }
         },
+        pinUnpinTabEvent: function(tabId, changeInfo, tab) {
+            this.tabsById[tabId].tabNode.remove()
+
+            let tabNode = null
+            if (changeInfo.pinned) {
+                tabNode = renderPinnedTab(tab)
+                $pinnedTabs.appendChild(tabNode)
+            } else {
+                tabNode = renderTab(tab)
+                $tabs.appendChild(tabNode)
+            }
+
+            this.tabsById[tabId].tabNode = tabNode
+        },
         setActiveTabEvent: function(activeInfo) {
             let tabNode = this.tabsById[activeInfo.tabId].tabNode
             if (activeInfo.previousTabId) {
@@ -195,5 +209,8 @@
     browser.tabs.onActivated.addListener(state.setActiveTabEvent.bind(state))
     browser.tabs.onUpdated.addListener(state.changeTabIconAndTitle.bind(state), {
         properties: ["title", "favIconUrl"]
+    })
+    browser.tabs.onUpdated.addListener(state.pinUnpinTabEvent.bind(state), {
+        properties: ["pinned"]
     })
 })()
