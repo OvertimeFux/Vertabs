@@ -51,8 +51,9 @@
             if (activeInfo.previousTabId) {
                 let prevActiveNode = this.tabsById[activeInfo.previousTabId].tabNode
                 prevActiveNode.classList.remove("highlighted")
-                tabNode.classList.add("highlighted")
             }
+
+            tabNode.classList.add("highlighted")
         }
     }
 
