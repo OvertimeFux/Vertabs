@@ -22,6 +22,12 @@ body {
   /* nothing */
 }
 
+/* #searchbox {
+  display: none;
+  width: 100%;
+  padding: 0% !important;
+} */
+
 button.pinned-tab, button.controls-btn {
   margin: 0;
   padding: 0;

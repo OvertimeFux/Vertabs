@@ -38,10 +38,10 @@
                 let tabNode = bothTabs.tabNode
                 if (tab.pinned) {
                     let favicon = tabNode.querySelector("img.favicon-pinned")
-                    favicon.src = tab.favIconUrl
+                    favicon.src = getFavicon(tab)
                     favicon.setAttribute("title", tab.title)
                 } else {
-                    tabNode.querySelector("img.favicon").src = tab.favIconUrl
+                    tabNode.querySelector("img.favicon").src = getFavicon(tab)
                     tabNode.querySelector("div.title").innerHTML = tab.title
                 }
             }
@@ -60,11 +60,16 @@
         let html = createElement("button")
         html.classList.add("pinned-tab")
         html.setAttribute('data-tabid', tab.id)
-        html.src = tab.favIconUrl
         html.title = tab.title
-        html.innerHTML = `<img class="favicon-pinned" src="${tab.favIconUrl}" title="${tab.title}">`
+        html.innerHTML = `<img class="favicon-pinned" src="${getFavicon(tab)}" title="${tab.title}">`
 
         return html
+    }
+
+    const getFavicon = function(tab) {
+        return tab.favIconUrl !== undefined 
+            ? tab.favIconUrl
+            : "icons/dark/history_Item.svg";
     }
 
     const renderTab = function (tab) {
@@ -81,7 +86,7 @@
         }
 
         html.innerHTML = `
-            <img class="favicon" src="${tab.favIconUrl}">
+            <img class="favicon" src="${getFavicon(tab)}">
             <div class="title">${tab.title}</div>
         `
         return html
