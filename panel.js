@@ -185,6 +185,7 @@
     document.addEventListener("contextmenu", event => event.preventDefault())
     
     browser.tabs.onRemoved.addListener(state.removeTabEvent.bind(state))
+    browser.tabs.onDetached.addListener(state.removeTabEvent.bind(state))
     browser.tabs.onCreated.addListener(state.createTabEvent.bind(state))
     browser.tabs.onActivated.addListener(state.setActiveTabEvent.bind(state))
     browser.tabs.onUpdated.addListener(state.changeTabIconAndTitle.bind(state), {
