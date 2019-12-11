@@ -29,9 +29,10 @@
                 } else {
                     $tabs.appendChild(tabNode)
                 }
+                scrollToViewTab(tab.id)
             })
         },
-        changeTabIconAndTitle: function(tabId, changeInfo, tab) {
+        changeTabIconAndTitle: function (tabId, changeInfo, tab) {
             // TODO: "attention" "audible" "discarded" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
             let bothTabs = this.tabsById[tabId]
             if (bothTabs) {
@@ -46,14 +47,34 @@
                 }
             }
         },
-        setActiveTabEvent: function(activeInfo) {
-            let tabNode = this.tabsById[activeInfo.tabId].tabNode
+        setActiveTabEvent: function (activeInfo) {
+            let tab = this.tabsById[activeInfo.tabId]
+            let tabNode = tab.tabNode
             if (activeInfo.previousTabId) {
                 let prevActiveNode = this.tabsById[activeInfo.previousTabId].tabNode
                 prevActiveNode.classList.remove("highlighted")
             }
 
             tabNode.classList.add("highlighted")
+
+            scrollToViewTab(activeInfo.tabId)
+        }
+    }
+
+    const scrollToViewTab = function (tabId) {
+        let tab = state.tabsById[tabId]
+        let tabNode = tab.tabNode
+
+        let visibleTopY = window.scrollY
+        let visibleBottomY = visibleTopY + window.innerHeight
+        let sizingInfo = tabNode.getBoundingClientRect()
+        let tabTopY = sizingInfo.y + window.scrollY
+        let tabBottomY = sizingInfo.y + window.scrollY + sizingInfo.height
+
+        if (tabBottomY > visibleBottomY) {
+            tabNode.scrollIntoView({behavior: "smooth", block: "end"})
+        } else if (tabTopY < visibleTopY) {
+            tabNode.scrollIntoView({behavior: "smooth", block: "start"})
         }
     }
 
@@ -67,7 +88,7 @@
         return html
     }
 
-    const getFavicon = function(tab) {
+    const getFavicon = function (tab) {
         return tab.favIconUrl !== undefined 
             ? tab.favIconUrl
             : "icons/dark/history_Item.svg";
@@ -95,7 +116,7 @@
 
     browser.windows.getCurrent().then((windowInfo) => {
         windowId = windowInfo.id
-    }).then(function() {
+    }).then(function () {
         browser.tabs.query({windowId: windowId}).then((windowTabs) => {
             $tabs.textContent = ""
 
@@ -117,7 +138,7 @@
         })
     })
 
-    $tabs.addEventListener('scroll', function(e) {
+    $tabs.addEventListener('scroll', function (e) {
         let target = e.target
         let pos = target.scrollTop
         let max = target.scrollHeight - target.clientHeight
