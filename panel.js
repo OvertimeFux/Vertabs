@@ -32,7 +32,7 @@
             })
         },
         changeTabIconAndTitle: function(tabId, changeInfo, tab) {
-            // TODO: "attention" "audible" "discarded" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
+            // TODO: "attention" "audible" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
             let bothTabs = this.tabsById[tabId]
             if (bothTabs) {
                 let tabNode = bothTabs.tabNode
@@ -59,6 +59,15 @@
             }
 
             this.tabsById[tabId].tabNode = tabNode
+        },
+        loadUnloadTabEvent: function(tabId, changeInfo, tab) {
+            let tabNode = this.tabsById[tabId].tabNode
+
+            if (changeInfo.discarded) {
+                tabNode.classList.add("discarded")
+            } else {
+                tabNode.classList.remove("discarded")
+            }
         },
         setActiveTabEvent: function(activeInfo) {
             let tabNode = this.tabsById[activeInfo.tabId].tabNode
@@ -212,5 +221,8 @@
     })
     browser.tabs.onUpdated.addListener(state.pinUnpinTabEvent.bind(state), {
         properties: ["pinned"]
+    })
+    browser.tabs.onUpdated.addListener(state.loadUnloadTabEvent.bind(state), {
+        properties: ["discarded"]
     })
 })()
