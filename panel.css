@@ -28,7 +28,8 @@ body {
   padding: 0% !important;
 } */
 
-button.pinned-tab, button.controls-btn {
+button.pinned-tab,
+button.controls-btn {
   margin: 0;
   padding: 0;
   border: none;
@@ -44,7 +45,8 @@ button::-moz-focus-inner {
   border: 0;
 }
 
-img.favicon-pinned, img.controls-btn-icon {
+img.favicon-pinned,
+img.controls-btn-icon {
   width: 16px;
   height: 16px;
   margin: 2px 5px;
@@ -75,6 +77,76 @@ img.favicon-pinned, img.controls-btn-icon {
   display: flex;
   flex-direction: line;
   align-items: center;
+
+  position: relative;
+  padding: 5px;
+  margin-bottom: 5px;
+  height: 20px;
+}
+
+.tab-control {
+  display: none;
+}
+.tab:hover > .tab-control {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 0;
+  top: 0;
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 30%,
+    rgba(255, 255, 255, 1) 50%
+  );
+}
+.tab-control i {
+  cursor: pointer;
+  font-size: 12px;
+}
+.tab-status {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 0;
+  top: 0;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 10%,
+    rgba(255, 255, 255, 1) 20%
+  );
+}
+.tab-status i {
+  font-size: 12px;
+}
+.tab:hover > .tab-status {
+  display: none;
+}
+.fade {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 0;
+  top: 0;
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 1) 75%
+  );
+}
+.tab:hover > .fade {
+  display: none;
 }
 
 .tab.highlighted {
@@ -102,15 +174,6 @@ img.favicon {
   /* nothing yet */
 }
 
-/* .fade {
-  top: 0;
-  right: 0;
-  width: 5%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-  position: fixed;
-} */
-
 #scroll-top {
   height: 16px;
   width: 100%;
@@ -125,7 +188,8 @@ img.favicon {
   display: none;
 }
 
-#scroll-top img, #scroll-bottom img {
+#scroll-top img,
+#scroll-bottom img {
   display: block;
   margin-left: auto;
   margin-right: auto;
