@@ -34,6 +34,7 @@
     },
     changeTabIconAndTitle: function(tabId, changeInfo, tab) {
       // TODO: "attention" "audible" "discarded" "favIconUrl" "hidden" "isArticle" "mutedInfo" "pinned" "sharingState" "status" "title"
+      console.log({ tabId, tab });
       let bothTabs = this.tabsById[tabId];
       if (bothTabs) {
         let tabNode = bothTabs.tabNode;
@@ -82,7 +83,10 @@
       scrollToViewTab(activeInfo.tabId);
     },
     checkSoundStatus: function(tabId) {
-      console.log(tabId);
+      console.groupCollapsed("Sound debug");
+      console.log({ tabId });
+      console.log({ state });
+      console.groupEnd();
     }
   };
 
@@ -139,22 +143,21 @@
         <img class="favicon" src="${getFavicon(tab)}">
         <span class="title">${tab.title}</span>
         <div class="tab-status">
-          ${audibleState(tab.audible)}
+          ${audibleState(tab.audible, tab.id)}
         </div>
         <div class="tab-control">
-            <i class="fa fa-fw fa-times" data-id="${tab.id}"></i>
+            <i class="fa fa-fw fa-times tab-close" data-id="${tab.id}"></i>
         </div>
         <div class="fade"></div>
       `;
     return html;
   };
 
-  const audibleState = function(state) {
-    console.log(state);
+  const audibleState = function(state, tabId) {
     if (!state) {
       return "";
     } else {
-      return `<i class="fa fa-fw fa-volume-up"></i>`;
+      return `<i class="fa fa-fw fa-volume-up" data-id="${tabId}"></i>`;
     }
   };
 
@@ -220,20 +223,27 @@
   });
 
   $tabs.addEventListener("click", function(e) {
-    console.debug("Click on:", e.target);
+    const { target } = e;
+    console.debug("Click on:", target);
 
-    if (e.target) {
+    if (target) {
       let tabId;
 
-      if (e.target.matches("div.tab")) {
-        tabId = parseInt(e.target.dataset.tabid);
+      if (target.matches("div.tab")) {
+        tabId = parseInt(target.dataset.tabid);
       }
 
-      if (e.target.parentElement.matches("div.tab")) {
-        tabId = parseInt(e.target.parentElement.dataset.tabid);
+      if (target.parentElement.matches("div.tab")) {
+        tabId = parseInt(target.parentElement.dataset.tabid);
       }
 
       browser.tabs.update(tabId, { active: true });
+
+      // close tab
+      if (target.matches("i.tab-close")) {
+        tabId = parseInt(target.dataset.id);
+        browser.tabs.remove(tabId);
+      }
     }
   });
 
@@ -269,5 +279,8 @@
   });
   browser.tabs.onUpdated.addListener(state.loadUnloadTabEvent.bind(state), {
     properties: ["discarded"]
+  });
+  browser.tabs.onUpdated.addListener(state.checkSoundStatus.bind(state), {
+    properties: ["audible"]
   });
 })();

@@ -94,7 +94,7 @@ img.controls-btn-icon {
   right: 0;
   top: 0;
   height: 100%;
-  padding-left: 30px;
+  padding-left: 15px;
   padding-right: 5px;
   background: linear-gradient(
     90deg,
@@ -103,7 +103,8 @@ img.controls-btn-icon {
     rgba(255, 255, 255, 1) 50%
   );
 }
-.tab-control i {
+.tab-control i,
+.tab-status i {
   cursor: pointer;
   font-size: 12px;
 }
@@ -123,11 +124,8 @@ img.controls-btn-icon {
     rgba(255, 255, 255, 1) 20%
   );
 }
-.tab-status i {
-  font-size: 12px;
-}
 .tab:hover > .tab-status {
-  display: none;
+  margin-right: 10px;
 }
 .fade {
   position: absolute;
